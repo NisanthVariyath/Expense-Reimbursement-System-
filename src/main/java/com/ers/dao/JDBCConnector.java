@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 public class JDBCConnector {
 	private static Logger log = Logger.getLogger(JDBCConnector.class);
 	private static Connection conn;
+	String username,passwd,url;
 		
 	public JDBCConnector() {
 		super();
@@ -30,7 +31,7 @@ public class JDBCConnector {
 		
 		try {
 			Class.forName("org.postgresql.Driver");
-			conn = DriverManager.getConnection("jdbc:postgresql://rev-can-training.cea2fhkj4vzc.us-east-2.rds.amazonaws.com:5432/ersdb", "ersdbuser", "passw0rd");
+			conn = DriverManager.getConnection(url,username,password);
 			log.trace("New connection to database established.");
 		} catch (Exception e) {
 			log.fatal("Error accessing database\n", e);
