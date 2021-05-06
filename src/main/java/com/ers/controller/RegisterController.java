@@ -74,8 +74,9 @@ public class RegisterController {
 		props.put("mail.debug", "true");
 		props.put("mail.store.protocol", "pop3");
 		props.put("mail.transport.protocol", "smtp");
-		final String username = "ers.register@gmail.com";//
-		final String password = "1982@Cherpu";
+		final String username = "";//
+		final String password = "";
+		
 		
 		System.out.println("At this point after getting properties Send Email");
 		
@@ -91,7 +92,7 @@ public class RegisterController {
 			Message msg = new MimeMessage(session);
 
 			// -- Set the FROM and TO fields --
-			msg.setFrom(new InternetAddress("ers.register@gmail.com"));
+			msg.setFrom(new InternetAddress(username));
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recepientEmail, false));
 			String password1 = "password";
 			msg.setSubject("ERS Password");
