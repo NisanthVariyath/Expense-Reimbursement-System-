@@ -11,3 +11,7 @@ The Expense Reimbursement System (ERS) will manage the process of reimbursing em
 - User registration can register in ERS as Employee or Admin. The password will be randomly generated   and emailed to them.
 - All Passwords are encrypted using Hashing.
 - ERS has added validation functionalities like unauthorized access control , Cache cleared Logout,    all type of validation for blank input fields & field type Password & email pattern validation.
+
+# Technology Used
+ 
+Java, Servlet, HTML, CSS, Javascript ,Ajax, PostgreSQL, Bootstrap.
