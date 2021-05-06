@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta  charset="ISO-8859-1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Employee Home</title>
+
+	
+<!-- 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+	
+	
+	
+<link rel=stylesheet type="text/css" href="/Project1-ERS/css/style.css">
+
+</head>
+<body>
+
+	
+
+
+     <div>
+		<h4 id="welcomeHeader">Welcome ERS Home</h4>
+	</div> 
+	<div class="hero-text-box">
+		    <form method="POST" action="/Project1-ERS/login.change" >
+				 <a class="btn btn-ghost" href="http://localhost:8080/Project1-ERS/login.change" style="max-width:100%;height:auto;">Logout</a>
+				<!-- <input type="button" value="logout"  style="float: right;">-->
+		   </form>
+		</div>
+		
+		<style>
+	
+	.btn:link,
+.btn:visited {
+    display: inline-block;
+    padding: 10px 30px;
+    font-weight: 300;
+    text-decoration: none;
+    border-radius: 200px;
+    transition: background-color 0.2s, border 0.2s, color 0.2s;
+
+
+
+}
+
+.btn:hover,
+.btn:active {
+    background-color: #cf6d17;
+}
+
+.btn-ghost:link,
+.btn-ghost:visited {
+    border: 1px solid #e67e22;
+    color: #e67e22;
+}
+
+.btn-ghost:hover,
+.btn-ghost:active {
+    border: 1px solid #cf6d17;
+    color: #fff;
+}
+	
+	
+	.hero-text-box {
+    position: absolute;
+
+    max-width: 100%;
+    height: auto;
+    top: 30px;
+    right: 100px;
+    transform: translate(-50%, -50%);
+}
+	
+	</style>
+		
+		
+	<div class="container">
+		<div class="title">
+			<h4>Please fill out the form below in order to submit your
+				expense ticket.</h4>
+		</div>
+		
+	
+		<form class="" id="TypeForm" method="POST" action="/Project1-ERS/NewExpense.change">
+		
+		
+					<div class="dropdown">
+				<select class="btn-sm" class="ui dropdown" name="type" id="type1"
+					form="TypeForm">
+					<option value="" selected disabled>Expense Type</option>
+					<option value="1">Lodging</option>
+					<option value="2">Travel</option>
+					<option value="3">Food</option>
+					<option value="4">Other</option>
+				</select> <br /> <br />
+			</div>
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text">Amount</span>
+				</div>
+				<input type="number" step=".01" min="0.01" class="form-control"
+					name="Amount" id="amount" aria-label="Amount (to the nearest dollar)">
+			</div>
+
+			<div class="form-group">
+				<label for="exampleTextarea">Description</label>
+				<textarea class="form-control" id="exampleTextarea"
+					name="Description" rows="3"></textarea>
+			</div>
+			
+			
+			<!---------------------------------------------------------------------------------  -->
+			
+			<div class="file-upload">
+  <button class="file-upload-btn" type="button"    onclick="$('.file-upload-input').trigger( 'click' )">Add Receipt</button>
+
+  <div class="image-upload-wrap">
+    <input class="file-upload-input" type='file'  onchange="readURL(this);" accept="image/*" />
+    <div class="drag-text">
+      <h4>Drag and drop a file or select add Receipt</h4>
+    </div>
+  </div>
+  <div class="file-upload-content">
+    <img class="file-upload-image" src="#" alt="your image" />
+    <div class="image-title-wrap" >
+      <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+    </div>
+  </div>
+</div>
+			
+			
+			
+<style>
+
+
+.file-upload {
+  background-color: #ffffff;
+  width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  
+}
+
+.file-upload-btn {
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  background: #1FB264;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  border-bottom: 4px solid #15824B;
+  transition: all .2s ease;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.file-upload-btn:hover {
+  background: #1AA059;
+  color: #ffffff;
+  transition: all .2s ease;
+  cursor: pointer;
+}
+
+.file-upload-btn:active {
+  border: 0;
+  transition: all .2s ease;
+}
+
+.file-upload-content {
+  display: none;
+  text-align: center;
+}
+
+.file-upload-input {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-upload-wrap {
+  margin-top: 20px;
+  border: 4px dashed #1FB264;
+  position: relative;
+}
+
+.image-dropping,
+.image-upload-wrap:hover {
+  background-color: #1FB264;
+  border: 4px dashed #ffffff;
+}
+
+.image-title-wrap {
+  padding: 0 15px 15px 15px;
+  color: #222;
+}
+
+.drag-text {
+  text-align: center;
+}
+
+.drag-text h3 {
+  font-weight: 100;
+  text-transform: uppercase;
+  color: #15824B;
+  padding: 60px 0;
+}
+
+.file-upload-image {
+  max-height: 200px;
+  max-width: 200px;
+  margin: auto;
+  padding: 20px;
+}
+
+.remove-image {
+  width: 200px;
+  margin: 0;
+  color: #fff;
+  background: #cd4535;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  border-bottom: 4px solid #b02818;
+  transition: all .2s ease;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.remove-image:hover {
+  background: #c13b2a;
+  color: #ffffff;
+  transition: all .2s ease;
+  cursor: pointer;
+}
+
+.remove-image:active {
+  border: 0;
+  transition: all .2s ease;
+}
+
+</style>
+			
+			
+<script type="text/javascript">
+function readURL(input) {
+	  if (input.files && input.files[0]) {
+
+	    var reader = new FileReader();
+
+	    reader.onload = function(e) {
+	      $('.image-upload-wrap').hide();
+
+	      $('.file-upload-image').attr('src', e.target.result);
+	      $('.file-upload-content').show();
+
+	      $('.image-title').html(input.files[0].name);
+	    };
+
+	    reader.readAsDataURL(input.files[0]);
+
+	  } else {
+	    removeUpload();
+	  }
+	}
+
+	function removeUpload() {
+	  $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+	  $('.file-upload-content').hide();
+	  $('.image-upload-wrap').show();
+	}
+	$('.image-upload-wrap').bind('dragover', function () {
+			$('.image-upload-wrap').addClass('image-dropping');
+		});
+		$('.image-upload-wrap').bind('dragleave', function () {
+			$('.image-upload-wrap').removeClass('image-dropping');
+	});
+
+
+
+</script>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- ---------------------------------------------------------------------------------- -->
+			
+			<div class="form-group">
+			
+				<input type="Submit" class="form-control btn" id="SubmitButton"
+					value="Submit" onclick="alertfunction()">
+		
+			</div>
+			</div>
+		</form>
+	</div>
+	
+	
+	<script>
+	function alertfunction(){
+		var selected = document.getElementById("type1").value;
+		var amount1 = document.getElementById("amount").value;
+		console.log(selected);
+		console.log(amount1);
+		if(selected == ""  || amount1 == 0){
+			alert("Select Type and Enter Amount !!");
+			//swal("Oops!", "Select Type and Enter Amount !!", "error");
+	 	}
+		else  
+		  alert("Successful!! Ticket submitted.");
+			//swal("Successful!", "Ticket submitted !!", "success");
+		
+		
+		
+	}
+	
+	
+	</script>
+	
+	
+	
+	<div style="width: 100%; height: 60px;"></div>
+	<div style="width: 100%; height: 60px; border-top: 1px solid teal; border-bottom: 1px solid teal; text-align: center">
+		<span style="font-size: 40px; width:100%; color: teal; padding: 0 0;">
+		Submitted Expense Tickets
+		</span>
+	</div>
+	<div style="width: 100%; height: 25px;"></div>
+	<div class="container">
+		<div class="form-group"   style="overflow:scroll;max-height: 500px;max-width: 1500px;">
+			<table border="2" id="reimbtable"  class="table table-bordered table-striped">
+				<tr>
+					<th>Ticket Id</th>
+					<th>Type</th>
+					<th>Amount</th>
+					<th>Date submitted</th>
+					<th>Date resolved</th>
+					<th>Status</th>
+					<th>Description</th>
+				</tr>
+			</table>
+		</div>
+		
+<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+	
+ <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+		
+  <script type="text/javascript" src="/Project1-ERS/js/home.js"></script>
+	<script type="text/javascript" src="/Project1-ERS/js/employeehome.js"></script>  
+</body>
+</html>

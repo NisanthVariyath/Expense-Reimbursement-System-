@@ -1,0 +1,171 @@
+CREATE TABLE ERS_REIMBURSEMENT_STATUS
+   (REIMB_STATUS_ID INT PRIMARY KEY, 
+	REIMB_STATUS VARCHAR(10) NOT NULL		 
+   );
+---------------------------------------------------------------
+  
+  CREATE TABLE ERS_REIMBURSEMENT_TYPE
+   (REIMB_TYPE_ID INT PRIMARY KEY, 
+	REIMB_TYPE VARCHAR(10) NOT NULL		 
+   );
+---------------------------------------------------------------------
+  
+  CREATE TABLE ERS_USER_ROLES
+   (ERS_USER_ROLE_ID INT PRIMARY KEY, 
+	USER_ROLE VARCHAR(20) NOT NULL		 
+   );
+  
+ -----------------------------------------------------------------------
+
+  CREATE TABLE ERS_USERS
+   (ERS_USER_ID INT PRIMARY KEY, 
+	ERS_USERNAME VARCHAR(50) NOT NULL,
+        ERS_PASSWORD VARCHAR(50) NOT NULL,
+        USER_FIRST_NAME VARCHAR(100) NOT NULL,
+        USER_LAST_NAME VARCHAR(100) NOT NULL,
+        USER_EMAIL  VARCHAR(150) NOT NULL,
+        USER_ROLE_ID  INT NOT NULL,
+        FOREIGN KEY (USER_ROLE_ID)
+	  REFERENCES ERS_USER_ROLES (ERS_USER_ROLE_ID),
+         CONSTRAINT ERS_USERS_UNv1 UNIQUE (ERS_USERNAME,USER_EMAIL)
+  );
+ 
+ -------------------------------------------------------------------------
+ 
+ 
+CREATE TABLE ERS_REIMBURSEMENT
+   ( REIMB_ID INT PRIMARY KEY,
+        REIMB_AMOUNT NUMERIC(5,2) NOT NULL,
+        REIMB_SUBMITTED TIMESTAMP (6) WITH TIME ZONE NOT NULL,
+        REIMB_RESOLVED TIMESTAMP (6) WITH TIME ZONE,
+        REIMB_DESCRIPTION VARCHAR(250),
+        REIMB_RECIPT BYTEA,
+        REIMB_AUTHOR INT NOT NULL,
+  	    REIMB_RESOLVER INT,
+	    REIMB_STATUS_ID INT NOT NULL,
+        REIMB_TYPE_ID INT NOT NULL,
+        FOREIGN KEY (REIMB_AUTHOR)
+	       REFERENCES ERS_USERS (ERS_USER_ID) on delete cascade,
+        FOREIGN KEY (REIMB_RESOLVER)
+	       REFERENCES ERS_USERS (ERS_USER_ID) on delete cascade,
+        FOREIGN KEY (REIMB_STATUS_ID)
+	       REFERENCES ERS_REIMBURSEMENT_STATUS (REIMB_STATUS_ID),
+        FOREIGN KEY (REIMB_TYPE_ID)
+	       REFERENCES ERS_REIMBURSEMENT_TYPE (REIMB_TYPE_ID)
+);
+
+drop table ERS_REIMBURSEMENT;
+
+--------------------------------------------------------------------------------
+INSERT INTO ERS_REIMBURSEMENT_TYPE VALUES (1,'LODGING');
+INSERT INTO ERS_REIMBURSEMENT_TYPE VALUES (2,'TRAVEL');
+INSERT INTO ERS_REIMBURSEMENT_TYPE VALUES (3,'FOOD');
+INSERT INTO ERS_REIMBURSEMENT_TYPE VALUES (4,'OTHER');
+ 
+ ----------------------------------------------------------------------------
+
+select * from ers_reimbursement_type;
+-------------------------------------------------------------------------------
+INSERT INTO ERS_USER_ROLES VALUES (1,'FINANCIAL MANAGER');
+INSERT INTO ERS_USER_ROLES VALUES (2,'EMPLOYEE');
+
+-----------------------------------------------------------------------------------
+
+select * from ers_user_roles;
+-----------------------------------------------------------------------------------
+INSERT INTO ERS_REIMBURSEMENT_STATUS VALUES (1,'PENDING');
+INSERT INTO ERS_REIMBURSEMENT_STATUS VALUES (2,'APPROVED');
+INSERT INTO ERS_REIMBURSEMENT_STATUS VALUES (3,'DENIED');
+-------------------------------------------------------------------------------------
+select * from ers_reimbursement_status;
+
+ 
+ ------------------------------------------------------------------------------------
+-- with BYTEA------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION add_reimbursement_request   
+(   NEO_REIMB_ID INT,
+        NEO_REIMB_AMOUNT NUMERIC(5,2),        
+        NEO_REIMB_DESCRIPTION VARCHAR(250),
+        NEO_REIMB_RECIPT BYTEA,
+        NEO_REIMB_AUTHOR INT,
+  	    NEO_REIMB_STATUS_ID INT,
+        NEO_REIMB_TYPE_ID INT
+)
+RETURNS VARCHAR(10) AS $$
+declare
+NEO_REIMB_SUBMITTED TIMESTAMP (6) WITH TIME ZONE;
+BEGIN
+    NEO_REIMB_SUBMITTED = now();
+    INSERT INTO ERS_REIMBURSEMENT(REIMB_ID,REIMB_AMOUNT, REIMB_SUBMITTED, REIMB_DESCRIPTION, REIMB_RECIPT,REIMB_AUTHOR,REIMB_STATUS_ID,REIMB_TYPE_ID) 
+          VALUES(NEO_REIMB_ID,NEO_REIMB_AMOUNT, NEO_REIMB_SUBMITTED,NEO_REIMB_DESCRIPTION,NEO_REIMB_RECIPT,NEO_REIMB_AUTHOR,NEO_REIMB_STATUS_ID,NEO_REIMB_TYPE_ID);
+RETURN 'SUCCESS';
+END
+$$ language 'plpgsql';
+--------------------------------------------------------------------------------------------------------------
+-- without BYTEA---------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION add_reimbursement_request2   
+(   NEO_REIMB_ID INT,
+        NEO_REIMB_AMOUNT NUMERIC(5,2),        
+        NEO_REIMB_DESCRIPTION VARCHAR(250),
+        NEO_REIMB_AUTHOR INT,
+  	    NEO_REIMB_STATUS_ID INT,
+        NEO_REIMB_TYPE_ID INT
+)
+RETURNS VARCHAR(10) AS $$
+declare
+NEO_REIMB_SUBMITTED TIMESTAMP (6) WITH TIME ZONE;
+BEGIN
+    NEO_REIMB_SUBMITTED = now();
+    INSERT INTO ERS_REIMBURSEMENT(REIMB_ID,REIMB_AMOUNT, REIMB_SUBMITTED, REIMB_DESCRIPTION,REIMB_AUTHOR,REIMB_STATUS_ID,REIMB_TYPE_ID) 
+          VALUES(NEO_REIMB_ID,NEO_REIMB_AMOUNT, NEO_REIMB_SUBMITTED,NEO_REIMB_DESCRIPTION,NEO_REIMB_AUTHOR,NEO_REIMB_STATUS_ID,NEO_REIMB_TYPE_ID);
+RETURN 'SUCCESS';
+END
+$$ language 'plpgsql';
+
+--------------------------------------------------------------------------------------------------------------
+  INSERT INTO ERS_USERS   (ERS_USER_ID,ERS_USERNAME, ERS_PASSWORD,USER_FIRST_NAME,USER_LAST_NAME,USER_EMAIL, USER_ROLE_ID) 
+                VALUES (100,'nash','password','Nisanth','Variyath','nisanth.mulayathvariyath@revature.net',1);
+      
+  INSERT INTO ERS_USERS   (ERS_USER_ID,ERS_USERNAME, ERS_PASSWORD,USER_FIRST_NAME,USER_LAST_NAME,USER_EMAIL, USER_ROLE_ID) 
+                VALUES (110,'tom','password','Tom','Joseph','tom.joseph@abcdmail.com',2);
+                   
+               
+               
+---------------------------------------------------------------------------------------------------------------
+               
+  select * from ers_users;
+ 
+ --------------------------------------------------------------------------------------------------------------
+               
+ select add_reimbursement_request(1000,100.50,'Had to take a Taxi to client location in Markham',pg_read_file('C:\samplerreceipts\Receipt-Template-Cash.xlsx')::bytea,110,1,2 );
+ 
+  select add_reimbursement_request2(1000,100.50,'Had to take a Taxi to client location in Markham',110,1,2 );
+ 
+ 
+ --------------------------------------------------------------------------------------------------------------------------------------------
+ 
+ 
+ select * from ERS_REIMBURSEMENT;
+---------------------------------------------------------------------------------------------------------------------------------------------
+ 
+   
+
+CREATE TABLE test_tabledb
+   ( name varchar(50)	 
+   );
+
+
+
+ INSERT INTO test_tabledb VALUES ('tom');
+
+ INSERT INTO test_tabledb VALUES ('jack');            
+               
+               
+=========================================================================================
+  
+
+  
+  
+  

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://JAVA.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+	<!-- <display-name>Project1-ERS</display-name> -->
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+
+
+
+ <servlet>
+  		<servlet-name>MasterServlet</servlet-name>
+  		<servlet-class>com.ers.servlets.MasterServlet</servlet-class>
+  		<!-- Eager or Lazy loaded servlets, eager is loaded on server startup, lazy is loaded when the servlet is first requested
+  		 can be a value greater or less thatn 0. less than 0 means lazy loaded, 0 and above is eagerly load in that priority
+  		 o is the default-->
+  		 <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>MasterServlet</servlet-name>
+  	<url-pattern>*.change</url-pattern>
+  	<!-- <url-pattern>/api/*</url-pattern> -->
+  	<!-- the * is a wildcard, any request that ends with it's URL with .change will be given to the master servlet -->
+  </servlet-mapping>
+  
+    <servlet>
+  		<servlet-name>JSONMasterServlet</servlet-name>
+  		<servlet-class>com.ers.servlets.JSONMasterServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>JSONMasterServlet</servlet-name>
+  	<url-pattern>*.json</url-pattern>
+  	<!-- <url-pattern>/api/*</url-pattern> -->
+  	<!-- the * is a wildcard, any request that ends with it's URL with .change will be given to the master servlet -->
+  </servlet-mapping>
+  
+
+</web-app>
