@@ -31,7 +31,7 @@ public class JDBCConnector {
 		
 		try {
 			Class.forName("org.postgresql.Driver");
-			conn = DriverManager.getConnection(url,username,password);
+			conn = DriverManager.getConnection(url,username,passwd);
 			log.trace("New connection to database established.");
 		} catch (Exception e) {
 			log.fatal("Error accessing database\n", e);
